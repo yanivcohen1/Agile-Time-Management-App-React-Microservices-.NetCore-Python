@@ -16,7 +16,8 @@
     "test:py": "cd ../server && python -m pytest",
     "lint:py": "cd ../server && python -m pylint app tests",
     "seed": "cd ../server && python seed.py",
-    "server": "cd ../server && uvicorn app.main:app --reload --port 5000"
+    "server": "cd ../server && uvicorn app.main:app --reload --port 5000",
+    "server:prod": "cd ../server && set \"ENV=prod\" && uvicorn app.main:app --port 5000"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
