@@ -9,32 +9,71 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import api from '../api/axios';
 import { useSnackbar } from 'notistack';
 
+interface Todo {
+  _id: string;
+  title: string;
+  description?: string;
+  status: string;
+  due_date?: string;
+}
+
 interface CreateTodoModalProps {
   open: boolean;
   onClose: () => void;
-  onTodoCreated?: () => void;
+  onTodoCreated?: () => void; // Renamed to onSave for clarity? No, keep for backward compat or add onSave
+  onSave?: () => void;
+  todo?: Todo | null;
 }
 
-const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodoCreated }) => {
+const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodoCreated, onSave, todo }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('BACKLOG');
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
+  React.useEffect(() => {
+    if (open) {
+      if (todo) {
+        setTitle(todo.title);
+        setDescription(todo.description || '');
+        setStatus(todo.status);
+        setDueDate(todo.due_date ? new Date(todo.due_date) : null);
+      } else {
+        setTitle('');
+        setDescription('');
+        setStatus('BACKLOG');
+        setDueDate(null);
+      }
+    }
+  }, [open, todo]);
+
   const handleSubmit = async () => {
     try {
-      await api.post('/todos/', {
-        title,
-        description,
-        status,
-        due_date: dueDate ? dueDate.toISOString() : null
-      });
-      enqueueSnackbar('Todo created successfully', { variant: 'success' });
+      if (todo) {
+        await api.put(`/todos/${todo._id}`, {
+          title,
+          description,
+          status,
+          due_date: dueDate ? dueDate.toISOString() : null
+        });
+        enqueueSnackbar('Todo updated successfully', { variant: 'success' });
+      } else {
+        await api.post('/todos/', {
+          title,
+          description,
+          status,
+          due_date: dueDate ? dueDate.toISOString() : null
+        });
+        enqueueSnackbar('Todo created successfully', { variant: 'success' });
+      }
+      
+      if (onSave) onSave();
       if (onTodoCreated) onTodoCreated();
       handleClose();
     } catch (error) {
       console.error(error);
+      enqueueSnackbar('Operation failed', { variant: 'error' });
     }
   };
 
@@ -48,7 +87,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-      <DialogTitle>Create New Todo</DialogTitle>
+      <DialogTitle>{todo ? 'Edit Todo' : 'Create New Todo'}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -97,7 +136,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained">Create</Button>
+        <Button onClick={handleSubmit} variant="contained">{todo ? 'Save' : 'Create'}</Button>
       </DialogActions>
     </Dialog>
   );

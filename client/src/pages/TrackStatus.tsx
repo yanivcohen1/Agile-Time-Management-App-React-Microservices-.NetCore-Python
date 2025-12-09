@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  TablePagination, TextField, MenuItem, Select, FormControl, InputLabel, IconButton
+  TablePagination, TextField, MenuItem, Select, FormControl, InputLabel, IconButton,
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -9,10 +10,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import api from '../api/axios';
 import { format } from 'date-fns';
+import CreateTodoModal from '../components/CreateTodoModal';
+import { useSnackbar } from 'notistack';
 
 interface Todo {
   _id: string;
   title: string;
+  description?: string;
   status: string;
   due_date: string;
 }
@@ -25,6 +29,11 @@ const TrackStatus: React.FC = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState<Date | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [todoToDelete, setTodoToDelete] = useState<Todo | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchTodos = useCallback(async () => {
     const params: Record<string, unknown> = {
@@ -52,6 +61,31 @@ const TrackStatus: React.FC = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTodos();
   }, [fetchTodos]);
+
+  const handleEditClick = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setEditModalOpen(true);
+  };
+
+  const handleDeleteClick = (todo: Todo) => {
+    setTodoToDelete(todo);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (todoToDelete) {
+      try {
+        await api.delete(`/todos/${todoToDelete._id}`);
+        enqueueSnackbar('Todo deleted successfully', { variant: 'success' });
+        fetchTodos();
+      } catch (error) {
+        console.error(error);
+        enqueueSnackbar('Failed to delete todo', { variant: 'error' });
+      }
+    }
+    setDeleteDialogOpen(false);
+    setTodoToDelete(null);
+  };
 
   return (
     <Box>
@@ -102,10 +136,10 @@ const TrackStatus: React.FC = () => {
                 <TableCell>{todo.status}</TableCell>
                 <TableCell>{todo.due_date ? format(new Date(todo.due_date), 'yyyy-MM-dd') : '-'}</TableCell>
                 <TableCell>
-                  <IconButton size="small" color="primary">
+                  <IconButton size="small" color="primary" onClick={() => handleEditClick(todo)}>
                     <Edit />
                   </IconButton>
-                  <IconButton size="small" color="error">
+                  <IconButton size="small" color="error" onClick={() => handleDeleteClick(todo)}>
                     <Delete />
                   </IconButton>
                 </TableCell>
@@ -125,6 +159,34 @@ const TrackStatus: React.FC = () => {
           setPage(0);
         }}
       />
+      
+      <CreateTodoModal
+        open={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+          setSelectedTodo(null);
+        }}
+        onSave={fetchTodos}
+        todo={selectedTodo}
+      />
+
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+      >
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete "{todoToDelete?.title}"? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
