@@ -75,25 +75,80 @@ pnpm seed
 - **Frontend E2E Tests**: `pnpm test:e2e` (Cypress)
 - **Backend Tests**: `pnpm test:py`
 
+## 📜 Available Scripts
+
+All scripts are run from the `client` directory using `pnpm <script-name>`.
+
+| Script | Description |
+| :--- | :--- |
+| `dev` | Starts the frontend development server (Vite). |
+| `build` | Builds the frontend for production. |
+| `preview` | Previews the production build locally. |
+| `lint` | Lints the frontend code using ESLint. |
+| `test` | Runs frontend unit tests (Vitest). |
+| `test:watch` | Runs frontend unit tests in watch mode. |
+| `coverage` | Runs frontend unit tests with coverage report. |
+| `test:e2e` | Runs end-to-end tests (Cypress). |
+| `test:e2e:report` | Runs E2E tests and generates a report. |
+| `test:py` | Runs backend tests (Pytest). |
+| `lint:py` | Lints the backend code using Pylint. |
+| `seed` | Seeds the MongoDB database with initial data. |
+| `server` | Starts the backend server in development mode (with reload). |
+| `server:prod` | Starts the backend server in production mode. |
+
 ## 📁 Project Structure
 
 ```
 ├── client/                 # Frontend application
-│   ├── src/
-│   │   ├── api/           # Axios setup & API calls
-│   │   ├── components/    # React components
-│   │   ├── context/       # Global state (Auth, Theme)
-│   │   ├── pages/         # Route components
+│   ├── cypress/           # E2E tests
+│   │   ├── e2e/
+│   │   │   ├── login.cy.ts
+│   │   │   └── todo.cy.ts
 │   │   └── ...
+│   ├── public/            # Static assets
+│   ├── src/
+│   │   ├── api/           # API integration
+│   │   │   └── axios.ts
+│   │   ├── assets/        # Source assets
+│   │   ├── components/    # Reusable UI components
+│   │   │   ├── CreateTodoModal.tsx
+│   │   │   └── Layout.tsx
+│   │   ├── context/       # React Context (State Management)
+│   │   │   ├── AuthContext.tsx
+│   │   │   └── ColorModeContext.tsx
+│   │   ├── pages/         # Page components
+│   │   │   ├── AgileBoard.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── Login.tsx
+│   │   │   └── TrackStatus.tsx
+│   │   ├── App.tsx        # Main App component
+│   │   ├── main.tsx       # Entry point
+│   │   ├── theme.ts       # MUI Theme configuration
+│   │   └── ...
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
 │   └── ...
 ├── server/                 # Backend application
 │   ├── app/
-│   │   ├── routes/        # API endpoints
-│   │   ├── models.py      # Beanie/Pydantic models
-│   │   ├── database.py    # DB connection
-│   │   └── main.py        # App entry point
-│   ├── config.*.yaml      # Configuration files
+│   │   ├── routes/        # API Routes
+│   │   │   ├── auth.py
+│   │   │   └── todos.py
+│   │   ├── auth.py        # Auth utilities
+│   │   ├── config.py      # Configuration loader
+│   │   ├── database.py    # Database connection
+│   │   ├── main.py        # FastAPI entry point
+│   │   └── models.py      # Database models
+│   ├── tests/             # Backend tests
+│   │   ├── conftest.py
+│   │   ├── test_api.py
+│   │   ├── test_check_users.py
+│   │   └── test_login.py
+│   ├── config.dev.yaml    # Dev configuration
+│   ├── config.prod.yaml   # Prod configuration
+│   ├── seed.py            # Database seeder
 │   └── ...
+├── README.md
 └── ...
 ```
 
