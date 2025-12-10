@@ -13,11 +13,11 @@
     "coverage": "vitest run --coverage",
     "test:e2e": "cypress run",
     "test:e2e:report": "rimraf cypress/reports && cypress run",
-    "test:py": "cd ../server && python -m pytest",
-    "lint:py": "cd ../server && python -m pylint app tests",
-    "seed": "cd ../server && python seed.py",
-    "server": "cd ../server && uvicorn app.main:app --reload --port 5000",
-    "server:prod": "cd ../server && set \"ENV=prod\" && uvicorn app.main:app --port 5000"
+    "test:py": "cd ../server && venv\\Scripts\\python -m pytest",
+    "lint:py": "cd ../server && venv\\Scripts\\python -m pylint app tests",
+    "seed": "cd ../server && venv\\Scripts\\python seed.py",
+    "serve": "cd ../server && venv\\Scripts\\python -m uvicorn app.main:app --reload --port 5000",
+    "serve:prod": "cd ../server && cross-env ENV=prod venv\\Scripts\\python -m uvicorn app.main:app --port 5000"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -52,6 +52,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.15",
+    "cross-env": "^10.1.0"
   }
 }

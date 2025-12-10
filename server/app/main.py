@@ -1,4 +1,5 @@
 import asyncio
+import os
 # Monkeypatch asyncio.coroutine for Motor 2.5.1 compatibility with Python 3.14
 if not hasattr(asyncio, 'coroutine'):
     asyncio.coroutine = lambda x: x
@@ -21,6 +22,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def on_startup():
+    print(f"Running in environment: {os.getenv('ENV', 'dev')}")
     await init_db()
 
 app.include_router(auth.router)
