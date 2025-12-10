@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   TablePagination, TextField, MenuItem, Select, FormControl, InputLabel, IconButton,
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TableSortLabel
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -29,6 +29,8 @@ const TrackStatus: React.FC = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState<Date | null>(null);
+  const [orderBy, setOrderBy] = useState<string>('created_at');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -41,6 +43,8 @@ const TrackStatus: React.FC = () => {
       size: rowsPerPage,
       search: search,
       status: statusFilter || undefined,
+      sort_by: orderBy,
+      sort_desc: order === 'desc',
     };
     if (dateFilter) {
         // Simple exact date match logic or range logic can be implemented. 
@@ -55,12 +59,18 @@ const TrackStatus: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [page, rowsPerPage, search, statusFilter, dateFilter]);
+  }, [page, rowsPerPage, search, statusFilter, dateFilter, orderBy, order]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTodos();
   }, [fetchTodos]);
+
+  const handleRequestSort = (property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   const handleEditClick = (todo: Todo) => {
     setSelectedTodo(todo);
@@ -123,15 +133,46 @@ const TrackStatus: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Due Date</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'title'}
+                  direction={orderBy === 'title' ? order : 'asc'}
+                  onClick={() => handleRequestSort('title')}
+                >
+                  Title
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'status'}
+                  direction={orderBy === 'status' ? order : 'asc'}
+                  onClick={() => handleRequestSort('status')}
+                >
+                  Status
+                </TableSortLabel>
+              </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'due_date'}
+                  direction={orderBy === 'due_date' ? order : 'asc'}
+                  onClick={() => handleRequestSort('due_date')}
+                >
+                  Due Date
+                </TableSortLabel>
+              </TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {todos.map((todo) => (
-              <TableRow key={todo._id}>
+              <TableRow 
+                key={todo._id}
+                sx={{ 
+                  '&:nth-of-type(odd)': { 
+                    backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'action.hover' 
+                  } 
+                }}
+              >
                 <TableCell>{todo.title}</TableCell>
                 <TableCell>{todo.status}</TableCell>
                 <TableCell>{todo.due_date ? format(new Date(todo.due_date), 'yyyy-MM-dd') : '-'}</TableCell>
