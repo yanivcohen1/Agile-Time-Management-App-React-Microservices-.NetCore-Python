@@ -37,9 +37,9 @@ const Layout: React.FC = () => {
   };
 
   const menuItems = [
-    { text: 'Main status board', icon: <Dashboard />, path: '/' },
+    { text: 'Main Board', icon: <Dashboard />, path: '/' },
     { text: 'Track status', icon: <ListAlt />, path: '/track' },
-    { text: 'Agile menu', icon: <ViewKanban />, path: '/agile' },
+    { text: 'Agile Board', icon: <ViewKanban />, path: '/agile' },
   ];
 
   const drawer = (
