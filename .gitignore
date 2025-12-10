@@ -5,3 +5,4 @@ server/__pycache__/
 .github/copilot-instructions.md
 plan.md
 planning instarctions.txt
+client/cypress/reports/
