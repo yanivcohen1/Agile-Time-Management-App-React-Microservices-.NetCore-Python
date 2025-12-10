@@ -13,7 +13,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const setupInterceptors = (setLoading: (progress: number) => void, enqueueSnackbar: (msg: string, opts: unknown) => void) => {
+export const setupInterceptors = (
+  setLoading: (progress: number) => void, 
+  enqueueSnackbar: (msg: string, opts: unknown) => void,
+  onUnauthorized?: () => void
+) => {
   // Store interceptor IDs to eject them later if needed, but for now we just add them.
   // Note: This might add duplicate interceptors if called multiple times.
   // Ideally this should be called once or managed with a ref to check if initialized.
@@ -37,6 +41,13 @@ export const setupInterceptors = (setLoading: (progress: number) => void, enqueu
     (error) => {
       setLoading(100);
       const message = error.response?.data?.detail || 'An error occurred';
+      
+      if (message === 'Could not validate credentials' || error.response?.status === 401) {
+        if (onUnauthorized) {
+          onUnauthorized();
+        }
+      }
+
       enqueueSnackbar(message, { variant: 'error' });
       return Promise.reject(error);
     }

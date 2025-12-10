@@ -29,8 +29,8 @@ const Layout: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
-    setupInterceptors(setProgress, enqueueSnackbar);
-  }, [enqueueSnackbar]);
+    setupInterceptors(setProgress, enqueueSnackbar, logout);
+  }, [enqueueSnackbar, logout]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
