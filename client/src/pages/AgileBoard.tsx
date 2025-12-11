@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd';
-import { Box, Typography, Paper, Card, CardContent, IconButton } from '@mui/material';
+import { Box, Typography, Paper, Card, CardContent, IconButton, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { format } from 'date-fns';
 import api from '../api/axios';
@@ -14,6 +14,7 @@ interface Todo {
 }
 
 const AgileBoard: React.FC = () => {
+  const theme = useTheme();
   const [columns, setColumns] = useState<{ [key: string]: Todo[] }>({
     BACKLOG: [],
     PENDING: [],
@@ -91,21 +92,21 @@ const AgileBoard: React.FC = () => {
 
   const getBadgeColor = (status: string) => {
     switch (status) {
-      case 'BACKLOG': return '#757575'; // Grey
-      case 'PENDING': return '#ff9800'; // Orange
-      case 'IN_PROGRESS': return '#03a9f4'; // Blue
-      case 'COMPLETED': return '#4caf50'; // Green
-      default: return '#757575';
+      case 'BACKLOG': return theme.palette.grey[500];
+      case 'PENDING': return theme.palette.warning.main;
+      case 'IN_PROGRESS': return theme.palette.info.main;
+      case 'COMPLETED': return theme.palette.success.main;
+      default: return theme.palette.grey[500];
     }
   };
 
   return (
-    <Box sx={{ bgcolor: '#121212', minHeight: '100vh', p: 3, color: 'white' }}>
+    <Box sx={{ minHeight: '100vh', p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'baseline', mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold', mr: 1 }}>
           Task Board
         </Typography>
-        <Typography variant="body2" sx={{ color: 'grey.500' }}>
+        <Typography variant="body2" color="text.secondary">
           drag&drop
         </Typography>
       </Box>
@@ -117,14 +118,15 @@ const AgileBoard: React.FC = () => {
               <Paper 
                 sx={{ 
                   p: 2, 
-                  bgcolor: '#1e1e1e', 
+                  bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#f4f5f7',
                   minHeight: 500,
                   borderRadius: 2,
-                  border: '1px solid #333'
+                  border: 1,
+                  borderColor: 'divider'
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'white' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
                     {columnId.replace('_', ' ')}
                   </Typography>
                   <Box 
@@ -160,12 +162,13 @@ const AgileBoard: React.FC = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               sx={{ 
-                                bgcolor: '#2d2d2d', 
-                                color: 'white',
+                                bgcolor: 'background.paper', 
+                                color: 'text.primary',
                                 borderRadius: 1,
-                                border: '1px solid #404040',
+                                border: 1,
+                                borderColor: 'divider',
                                 '&:hover': {
-                                  bgcolor: '#363636'
+                                  bgcolor: 'action.hover'
                                 }
                               }}
                             >
@@ -174,19 +177,19 @@ const AgileBoard: React.FC = () => {
                                   <Typography variant="subtitle1" sx={{ fontWeight: 'bold', lineHeight: 1.2 }}>
                                     {task.title}
                                   </Typography>
-                                  <IconButton size="small" sx={{ color: 'white', p: 0.5, mt: -0.5, mr: -0.5 }}>
+                                  <IconButton size="small" sx={{ p: 0.5, mt: -0.5, mr: -0.5 }}>
                                     <EditIcon fontSize="small" />
                                   </IconButton>
                                 </Box>
                                 
                                 {task.description && (
-                                  <Typography variant="body2" sx={{ color: 'grey.400', mb: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                     {task.description}
                                   </Typography>
                                 )}
 
                                 {task.due_date && (
-                                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block' }}>
+                                  <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
                                     Due: {format(new Date(task.due_date), 'M/d/yyyy')}
                                   </Typography>
                                 )}
