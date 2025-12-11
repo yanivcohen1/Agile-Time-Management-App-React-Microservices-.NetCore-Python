@@ -18,6 +18,7 @@ interface Todo {
   description?: string;
   status: string;
   due_date: string;
+  duration?: string;
 }
 
 const TrackStatus: React.FC = () => {
@@ -168,6 +169,7 @@ const TrackStatus: React.FC = () => {
                   Due Date
                 </TableSortLabel>
               </TableCell>
+              <TableCell>Duration</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -184,6 +186,7 @@ const TrackStatus: React.FC = () => {
                 <TableCell>{todo.title}</TableCell>
                 <TableCell>{todo.status}</TableCell>
                 <TableCell>{todo.due_date ? todo.due_date.split('T')[0] : '-'}</TableCell>
+                <TableCell>{todo.duration || '-'}</TableCell>
                 <TableCell>
                   <IconButton size="small" color="primary" onClick={() => handleEditClick(todo)}>
                     <Edit />

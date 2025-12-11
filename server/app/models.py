@@ -27,6 +27,7 @@ class Todo(Document):
     title: str
     description: Optional[str] = None
     status: Status = Status.BACKLOG
+    duration: Optional[str] = None
     due_date: Optional[datetime] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)

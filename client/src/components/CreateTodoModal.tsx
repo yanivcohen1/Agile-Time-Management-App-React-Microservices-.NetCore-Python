@@ -16,6 +16,7 @@ interface Todo {
   description?: string;
   status: string;
   due_date?: string;
+  duration?: string;
 }
 
 interface CreateTodoModalProps {
@@ -29,6 +30,7 @@ interface CreateTodoModalProps {
 const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodoCreated, onSave, todo }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [duration, setDuration] = useState('');
   const [status, setStatus] = useState('BACKLOG');
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -38,6 +40,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
       if (todo) {
         setTitle(todo.title);
         setDescription(todo.description || '');
+        setDuration(todo.duration || '');
         setStatus(todo.status);
         if (todo.due_date) {
           const [y, m, d] = todo.due_date.split('T')[0].split('-').map(Number);
@@ -48,6 +51,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
       } else {
         setTitle('');
         setDescription('');
+        setDuration('');
         setStatus('BACKLOG');
         setDueDate(null);
       }
@@ -60,6 +64,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
         await api.put(`/todos/${todo._id}`, {
           title,
           description,
+          duration,
           status,
           due_date: dueDate ? format(dueDate, 'yyyy-MM-dd') : null
         });
@@ -68,6 +73,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
         await api.post('/todos/', {
           title,
           description,
+          duration,
           status,
           due_date: dueDate ? format(dueDate, 'yyyy-MM-dd') : null
         });
@@ -86,6 +92,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
   const handleClose = () => {
     setTitle('');
     setDescription('');
+    setDuration('');
     setStatus('BACKLOG');
     setDueDate(null);
     onClose();
@@ -116,6 +123,16 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
           variant="outlined"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          margin="dense"
+          label="Duration"
+          name="duration"
+          fullWidth
+          variant="outlined"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
           sx={{ mb: 2 }}
         />
         <FormControl fullWidth sx={{ mb: 2 }}>

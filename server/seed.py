@@ -47,14 +47,14 @@ async def seed():
     # Seed Todos for User
     if await Todo.find(Todo.user.id == user.id).count() == 0:
         todos = [
-            Todo(title="Learn React", status=Status.COMPLETED, user=user, due_date=datetime.utcnow() - timedelta(days=1)),
-            Todo(title="Learn FastAPI", status=Status.IN_PROGRESS, user=user, due_date=datetime.utcnow() + timedelta(days=1)),
-            Todo(title="Build Todo App", status=Status.PENDING, user=user, due_date=datetime.utcnow() + timedelta(days=2)),
-            Todo(title="Deploy App", status=Status.BACKLOG, user=user, due_date=datetime.utcnow() + timedelta(days=5)),
+            Todo(title="Learn React", status=Status.COMPLETED, user=user, due_date=datetime.utcnow() - timedelta(days=1), duration="2h"),
+            Todo(title="Build a Project", status=Status.IN_PROGRESS, user=user, due_date=datetime.utcnow() + timedelta(days=2), duration="5h"),
+            Todo(title="Master FastAPI", status=Status.PENDING, user=user, due_date=datetime.utcnow() + timedelta(days=5), duration="3h"),
+            Todo(title="Deploy App", status=Status.BACKLOG, user=user, due_date=datetime.utcnow() + timedelta(days=10), duration="1h"),
         ]
         for todo in todos:
             await todo.create()
-        print("Seeded todos for user")
+        print(f"Seeded {len(todos)} todos for user")
 
 if __name__ == "__main__":
     asyncio.run(seed())

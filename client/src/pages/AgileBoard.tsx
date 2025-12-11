@@ -12,6 +12,7 @@ interface Todo {
   description?: string;
   status: string;
   due_date?: string;
+  duration?: string;
 }
 
 const AgileBoard: React.FC = () => {
@@ -216,6 +217,12 @@ const AgileBoard: React.FC = () => {
                                 {task.description && (
                                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                     {task.description}
+                                  </Typography>
+                                )}
+
+                                {task.duration && (
+                                  <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
+                                    Duration: {task.duration}
                                   </Typography>
                                 )}
 

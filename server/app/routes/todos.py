@@ -13,12 +13,14 @@ class TodoCreate(BaseModel):
     description: Optional[str] = None
     status: Status = Status.BACKLOG
     due_date: Optional[datetime] = None
+    duration: Optional[str] = None
 
 class TodoUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[Status] = None
     due_date: Optional[datetime] = None
+    duration: Optional[str] = None
 
 @router.get("/", response_model=dict)
 async def get_todos(
