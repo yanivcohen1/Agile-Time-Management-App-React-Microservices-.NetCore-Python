@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   TablePagination, TextField, MenuItem, Select, FormControl, InputLabel, IconButton,
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TableSortLabel
+  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TableSortLabel,
+  Chip, useTheme
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -22,6 +23,7 @@ interface Todo {
 }
 
 const TrackStatus: React.FC = () => {
+  const theme = useTheme();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -36,6 +38,16 @@ const TrackStatus: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [todoToDelete, setTodoToDelete] = useState<Todo | null>(null);
   const { enqueueSnackbar } = useSnackbar();
+
+  const getBadgeColor = (status: string) => {
+    switch (status) {
+      case 'BACKLOG': return theme.palette.grey[500];
+      case 'PENDING': return theme.palette.warning.main;
+      case 'IN_PROGRESS': return theme.palette.info.main;
+      case 'COMPLETED': return theme.palette.success.main;
+      default: return theme.palette.grey[500];
+    }
+  };
 
   const fetchTodos = useCallback(async () => {
     const params: Record<string, unknown> = {
@@ -184,7 +196,17 @@ const TrackStatus: React.FC = () => {
                 }}
               >
                 <TableCell>{todo.title}</TableCell>
-                <TableCell>{todo.status}</TableCell>
+                <TableCell>
+                  <Chip 
+                    label={todo.status.replace('_', ' ')} 
+                    size="small"
+                    sx={{ 
+                      bgcolor: getBadgeColor(todo.status),
+                      color: 'white',
+                      fontWeight: 'bold'
+                    }} 
+                  />
+                </TableCell>
                 <TableCell>{todo.due_date ? todo.due_date.split('T')[0] : '-'}</TableCell>
                 <TableCell>{todo.duration || '-'}</TableCell>
                 <TableCell>
