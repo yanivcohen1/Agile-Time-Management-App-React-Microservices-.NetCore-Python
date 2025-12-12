@@ -12,7 +12,7 @@ The solution consists of three main components:
 
 ## 🚀 Technologies
 
-### Frontend (`/frontend`)
+### Frontend (`/client`)
 *   **Framework**: React 18 + TypeScript + Vite
 *   **UI Libraries**: Material UI (MUI) v5 + PrimeReact v10
 *   **Routing**: React Router v6 (Nested Routes)
@@ -46,7 +46,7 @@ The solution consists of three main components:
 
 ```
 root/
-├── frontend/                 # React Application
+├── client/                   # React Application
 ├── backend_netCore_service/  # ASP.NET Core Web API
 ├── backend_python_service/   # FastAPI Service
 └── README.md                 # This file
@@ -56,9 +56,9 @@ root/
 
 Each service has its own detailed setup instructions. Please refer to the respective README files:
 
-*   [Frontend Setup](./frontend/README.md)
+*   [Frontend Setup](./client/README.md)
 *   [.NET Backend Setup](./backend_netCore_service/README.md)
-*   [Python Backend Setup](./backend_python_service/readme.md)
+*   [Python Backend Setup](./backend_python_service/README.md)
 
 ## ✨ Recent Updates
 

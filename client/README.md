@@ -1,110 +1,82 @@
-# React + TypeScript + Vite + Playwright
+# React Frontend Client
 
-A modern React application built with TypeScript and Vite, featuring a todo list, user authentication, role-based access control, and nested routing. The app uses Material UI for styling, PrimeReact components, and Axios for API calls.
+This is the frontend application for the Time Management App, built with React, TypeScript, and Vite.
 
-## Features
+## 🚀 Technologies
 
-- **Todo Management**: Create, edit, and manage todo items
-- **User Authentication**: Login/logout with role-based access (admin, user, guest)
-- **Nested Routing**: Dynamic routes with React Router v6
-- **Theming**: Light/dark mode support
-- **Responsive UI**: Material UI and PrimeReact components
-- **Data Persistence**: Local storage for user data cache memory
-- **Loading Indicators**: Global loading bar for API requests
-- **Animations**: Smooth transitions with CSS animations
-- **Configurable Backend**: Backend URL loaded from YAML configuration file
+*   **Framework**: React 18 + TypeScript + Vite
+*   **UI Libraries**: Material UI (MUI) v5 + PrimeReact v10
+*   **State Management**: React Context API
+*   **Routing**: React Router v6
+*   **Testing**: Vitest (Unit), Cypress (E2E)
+*   **HTTP Client**: Axios
 
-## Project Structure
+## 🛠 Setup & Installation
 
-- `src/`
-  - `pages/`: Page components with nested routes (Home, About, Login, etc.)
-  - `auth/`: Authentication context and logic (AuthContext)
-  - `context/`: App-wide state management (AppContext, ToastContext)
-  - `components/`: Reusable UI components (CustomButton, CustomSelect)
-  - `routes/`: Route protection components (PrivateRoute)
-  - `utils/`: Utility functions, storage helpers, and modal components (storage.ts, Modal.tsx)
-  - `hooks/`: Custom React hooks (useTheme)
-  - `animation/`: CSS animation styles (fade.css, slide-right.css)
-  - `assets/`: Static assets
-  - `__mocks__/`: Test mocks (axios.js)
-- `public/`: Public assets and configuration files (config.dev.yaml, config.prod.yaml, index.html, manifest.json, robots.txt)
-- `build/`: Production build output
+### Prerequisites
+*   Node.js (v18+)
+*   pnpm (recommended) or npm/yarn
 
-## Available Scripts
+### Installation
 
-In the project directory, you can run:
+`ash
+cd client
+pnpm install
+`
 
-### `pnpm dev`
+## 🏃‍♂️ Running the App
 
-Runs the app in the development mode.\
-The server port and backend URL are loaded from `public/config.dev.yaml` (default port: 3001, backend: http://localhost:5000).\
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
+### Development Server
+Starts the development server at http://localhost:5173.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`ash
+pnpm dev
+`
 
-### `pnpm test`
+### Production Build
+Builds the application for production.
 
-Launches the test runner once.\
+`ash
+pnpm build
+`
 
-### `pnpm test:watch`
+### Preview Production Build
+Previews the built application.
 
-Runs Vitest in watch mode for continuous testing during development.\
+`ash
+pnpm preview
+`
 
-### `pnpm coverage`
+## 🧪 Testing
 
-Generates a coverage report using Vitest.\
+### Unit Tests
+Runs unit tests using Vitest.
 
-### `pnpm test:e2e`
+`ash
+pnpm test
+`
 
-Runs end-to-end tests using Playwright.\
-you need to run the FE + BE first
+### E2E Tests
+Runs end-to-end tests using Cypress.
 
-### `pnpm build`
+`ash
+pnpm test:e2e
+`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Configuration
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The application uses environment variables for configuration.
 
-### `pnpm lint`
+*   .env.development: Used during development.
+*   .env.production: Used during production build.
 
-Runs ESLint to check for code quality issues and potential errors in the codebase.
+**Key Variables:**
+*   VITE_API_URL: URL of the backend API.
 
-### `pnpm preview`
+## 📂 Project Structure
 
-Serves the production build locally for testing and previewing the app before deployment.\
-Uses `public/config.prod.yaml` for configuration (backend: https://time-management-api.com).
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-
-## Configuration
-
-The app can be configured using `public/config.dev.yaml` for development and `public/config.prod.yaml` for production:
-
-### Development Configuration (`config.dev.yaml`):
-
-```yaml
-port: 3001
-backend:
-  url: http://localhost:5000
-```
-
-### Production Configuration (`config.prod.yaml`):
-
-```yaml
-port: 3001
-backend:
-  url: https://time-management-api.com
-```
-
-- `port`: The port on which the React development server runs
-- `backend.url`: The base URL for API calls (loaded dynamically at runtime based on NODE_ENV)
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+*   src/api: Axios setup and API calls.
+*   src/components: Reusable UI components.
+*   src/context: Global state (Auth, Theme).
+*   src/pages: Application pages (Login, Dashboard, etc.).
+*   src/theme.ts: MUI theme configuration.
