@@ -71,7 +71,7 @@ The application uses environment variables for configuration.
 *   .env.production: Used during production build.
 
 **Key Variables:**
-*   VITE_API_URL: URL of the backend API.
+*   `VITE_API_URL`: URL of the backend API (e.g., `http://localhost:5000`).
 
 ## 📂 Project Structure
 

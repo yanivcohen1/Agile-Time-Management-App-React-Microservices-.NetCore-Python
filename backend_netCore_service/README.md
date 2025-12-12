@@ -16,9 +16,23 @@ This is the authentication and user management service, built with ASP.NET Core 
 *   MongoDB (running locally on default port 27017)
 
 ### Configuration
-Configuration is managed via ppsettings.json and YAML files:
-*   dev.appsettings.yaml: Development settings.
-*   prod.appsettings.yaml: Production settings.
+Configuration is managed via `appsettings.json` and YAML files:
+*   `dev.appsettings.yaml`: Development settings.
+*   `prod.appsettings.yaml`: Production settings.
+
+### Configuration Parameters
+
+| Parameter | Description | Example |
+| :--- | :--- | :--- |
+| `Jwt:Key` | Secret key for signing JWT tokens. **Must be >32 chars.** | `K3yForJwtAuthApi...` |
+| `Jwt:Issuer` | Token issuer claim. | `AuthApi` |
+| `Jwt:Audience` | Token audience claim. | `AuthApiUsers` |
+| `Jwt:ExpirationMinutes` | Token lifetime in minutes. | `60` |
+| `Database:Provider` | Database provider to use. | `MongoDB` or `MySQL` |
+| `ConnectionStrings:MongoConnection` | MongoDB connection string. | `mongodb://localhost:27017/react-cs-todo-app` |
+| `ConnectionStrings:DefaultConnection` | SQL connection string (if using MySQL). | `server=localhost;...` |
+| `Server:Urls` | URLs the server listens on. | `http://localhost:5000;https://localhost:5001` |
+| `Cors:AllowedOrigins` | Comma-separated list of allowed CORS origins. | `http://localhost:5173` |
 
 ## 🏃‍♂️ Running the Service
 

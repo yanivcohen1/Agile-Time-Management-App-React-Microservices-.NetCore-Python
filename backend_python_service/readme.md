@@ -54,7 +54,17 @@ pytest
 `
 
 ## ⚙️ Configuration
-Settings are loaded from config.dev.yaml (default) or config.prod.yaml.
+Settings are loaded from `config.dev.yaml` (default) or `config.prod.yaml`.
+
+### Configuration Parameters
+
+| Parameter | Description | Example |
+| :--- | :--- | :--- |
+| `Jwt.Key` | Secret key used for signing JWT tokens. **Change this in production.** | `your-super-secret-key...` |
+| `Jwt.TimeoutMinutes` | Token expiration time in minutes. | `30` |
+| `ConnectionStrings.MongoConnection` | MongoDB connection string. | `mongodb://localhost:27017/react-py-todo-app` |
+| `Server.Urls` | URLs the server listens on. | `http://localhost:5000;https://localhost:5001` |
+| `Cors.AllowedOrigins` | Comma-separated list of allowed CORS origins. | `http://localhost:3000,http://localhost:5173` |
 
 ## API Documentation with Swagger
 
