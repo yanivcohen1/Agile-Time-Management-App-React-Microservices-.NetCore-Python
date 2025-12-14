@@ -60,6 +60,11 @@ public class TodosController : ControllerBase
             _ => "CreatedAt"
         };
 
+        if (dueDateStart.HasValue)
+        {
+            dueDateStart = dueDateStart.Value.Date;
+        }
+
         if (dueDateEnd.HasValue)
         {
             dueDateEnd = dueDateEnd.Value.Date.AddDays(1).AddTicks(-1);

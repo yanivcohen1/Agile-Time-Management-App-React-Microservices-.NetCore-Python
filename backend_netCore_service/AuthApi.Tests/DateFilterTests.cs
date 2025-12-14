@@ -68,6 +68,15 @@ public class DateFilterTests : IClassFixture<CustomWebApplicationFactory>
         var result = await getResponse.Content.ReadFromJsonAsync<TodoResponse>(options);
         result!.Items.Should().Contain(t => t.Id == createdTodo!.Id);
 
+        // Case A2: Start Date with Time (should be normalized to start of day)
+        // Todo is at 12:00. If we pass 15:00, without normalization it would be excluded.
+        var startWithTime = "2023-10-27T15:00:00";
+        var endWithTime = "2023-10-27T23:00:00";
+        var getResponseTime = await client.GetAsync($"/todos?due_date_start={startWithTime}&due_date_end={endWithTime}");
+        getResponseTime.StatusCode.Should().Be(HttpStatusCode.OK);
+        var resultTime = await getResponseTime.Content.ReadFromJsonAsync<TodoResponse>(options);
+        resultTime!.Items.Should().Contain(t => t.Id == createdTodo!.Id);
+
         // Case B: Range before the date
         var startBefore = "2023-10-20";
         var endBefore = "2023-10-26";
