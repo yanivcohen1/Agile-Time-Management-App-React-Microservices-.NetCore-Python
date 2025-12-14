@@ -20,11 +20,11 @@ This is the secondary backend service, built with FastAPI and Python.
 
 1.  Create a virtual environment:
     `ash
-    python -m venv venv
+    python -m venv .venv
     `
 2.  Activate the virtual environment:
-    *   Windows: .\venv\Scripts\Activate
-    *   Linux/Mac: source venv/bin/activate
+    *   Windows: .\.venv\Scripts\Activate
+    *   Linux/Mac: source .venv/bin/activate
 3.  Install dependencies:
     `ash
     pip install -r requirements.txt
