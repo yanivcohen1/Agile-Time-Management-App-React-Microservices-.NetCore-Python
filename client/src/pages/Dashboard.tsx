@@ -17,6 +17,7 @@ interface WorkloadStat {
   pending: number;
   in_progress: number;
   completed: number;
+  [key: string]: string | number;
 }
 
 const Dashboard: React.FC = () => {
@@ -117,7 +118,7 @@ const Dashboard: React.FC = () => {
           {workloadStats.length > 0 && (
             <Paper variant="outlined" sx={{ p: 2, height: 400 }}>
                 <BarChart
-                    dataset={workloadStats as any}
+                    dataset={workloadStats}
                     xAxis={[{ scaleType: 'band', dataKey: '_id', valueFormatter: (v) => new Date(v).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) }]}
                     series={[
                         { dataKey: 'backlog', label: 'Backlog', stack: 'total', color: theme.palette.grey[500] },
