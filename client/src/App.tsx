@@ -10,8 +10,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import TrackStatus from './pages/TrackStatus';
 import AgileBoard from './pages/AgileBoard';
-import AdminPage from './pages/AdminPage';
-import AdminConsolePage from './pages/AdminConsolePage';
+import AdminPage from './pages/Admin/AdminPage';
+import AdminConsolePage from './pages/Admin/AdminConsolePage';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();

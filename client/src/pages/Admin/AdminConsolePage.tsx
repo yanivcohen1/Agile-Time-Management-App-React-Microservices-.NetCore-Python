@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Box, Typography, Switch, FormControlLabel } from '@mui/material';
-import { useAdmin } from '../context/AdminContext';
+import { useAdmin } from '../../context/AdminContext';
 
 const AdminConsolePage: React.FC = () => {
   const { id, consoleId } = useParams<{ id: string; consoleId: string }>();

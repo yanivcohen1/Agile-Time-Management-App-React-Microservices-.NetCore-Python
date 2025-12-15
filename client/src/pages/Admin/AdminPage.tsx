@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Link, Outlet } from 'react-router-dom';
 import { Box, Typography, Switch, FormControlLabel, Button, Divider } from '@mui/material';
-import { useAdmin } from '../context/AdminContext';
+import { useAdmin } from '../../context/AdminContext';
 
 const AdminPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
