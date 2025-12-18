@@ -59,7 +59,7 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             _id = user.Id,
-            email = user.Username,
+            username = user.Username,
             full_name = user.FullName,
             role = user.Role
         });
@@ -73,7 +73,7 @@ public class AuthController : ControllerBase
         return Ok(users.Select(u => new
         {
             _id = u.Id,
-            email = u.Username,
+            username = u.Username,
             full_name = u.FullName,
             role = u.Role
         }));
