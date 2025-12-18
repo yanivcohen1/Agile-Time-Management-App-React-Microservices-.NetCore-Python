@@ -81,7 +81,11 @@ public class TodosController : ControllerBase
                 if (currentUser?.Role == "Admin")
                 {
                     targetUserId = userId;
+                } else {
+                    return Unauthorized("Only admins can access other users' todos");
                 }
+            } else {
+                return Unauthorized("Invalid user");
             }
         }
 
