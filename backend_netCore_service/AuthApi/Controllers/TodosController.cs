@@ -82,7 +82,11 @@ public class TodosController : ControllerBase
                 {
                     targetUserId = userId;
                 } else {
-                    return Unauthorized("Only admins can access other users' todos");
+                    return Unauthorized("Only admins can access other users' todos"); // 403
+                    throw new HttpStatusException(
+                        StatusCodes.Status403Forbidden, // for costume code response
+                        "Admin access required"
+                    );
                 }
             } else {
                 return Unauthorized("Invalid user");

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -136,6 +137,30 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+// add costume code response for exceptions
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionFeature =
+            context.Features.Get<IExceptionHandlerFeature>();
+
+        var exception = exceptionFeature?.Error;
+
+        if (exception is HttpStatusException httpEx)
+        {
+            context.Response.StatusCode = httpEx.StatusCode;
+            context.Response.ContentType = "text/plain";
+
+            await context.Response.WriteAsync(httpEx.Message);
+            return;
+        }
+
+        // Optional: fallback
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    });
+});
+
 app.MapControllers();
 app.MapHealthChecks("/health");
 
@@ -158,5 +183,16 @@ if (args.Contains("--seed"))
 }
 
 app.Run();
+
+public class HttpStatusException : Exception
+{
+    public int StatusCode { get; }
+
+    public HttpStatusException(int statusCode, string message)
+        : base(message)
+    {
+        StatusCode = statusCode;
+    }
+}
 
 public partial class Program;
