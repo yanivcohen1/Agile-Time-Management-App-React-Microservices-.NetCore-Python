@@ -4,7 +4,7 @@ from beanie import PydanticObjectId
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException
 from app.models import Todo, User, Status
-from app.auth import get_current_user
+from app.auth import get_current_user, get_current_active_admin
 
 router = APIRouter(prefix="/todos", tags=["todos"])
 
@@ -38,6 +38,9 @@ async def get_todos(
     user_id: Optional[str] = None,
     current_user: User = Depends(get_current_user)
 ):
+    if user_id :
+        get_current_active_admin() # only admin can query other users' todos
+
     if user_id and current_user.role == "admin":
         query = Todo.find(Todo.user.id == PydanticObjectId(user_id))  # type: ignore
     else:
