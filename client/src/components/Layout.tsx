@@ -21,7 +21,7 @@ const drawerWidth = 240;
 const Layout: React.FC = () => {
   const theme = useTheme();
   const { toggleColorMode } = useColorMode();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
@@ -142,7 +142,7 @@ const Layout: React.FC = () => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -172,7 +172,7 @@ const Layout: React.FC = () => {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
       >
         <Drawer
           variant={isMobile ? 'temporary' : 'permanent'}
@@ -192,7 +192,7 @@ const Layout: React.FC = () => {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, p: 3, width: { md: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
         <Outlet />
