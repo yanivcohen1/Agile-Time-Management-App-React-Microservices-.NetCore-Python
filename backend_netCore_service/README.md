@@ -4,11 +4,54 @@ This is the authentication and user management service, built with ASP.NET Core 
 
 ## 🚀 Technologies
 
-*   **Framework**: ASP.NET Core 9.0 Web API
-*   **Database**: MongoDB (via Entity Framework Core)
+*   **Database**: MongoDB (via Entity Framework Core and MongoDB.Entities)
 *   **Testing**: xUnit, FluentAssertions, WebApplicationFactory
 *   **Documentation**: Swagger / OpenAPI
 *   **Dependency Injection**: Autofac with DynamicProxy for AOP
+
+## 🗄 Database Migrations and Restore
+
+The service uses MongoDB.Entities for advanced database migration and restore capabilities, allowing versioned database schema changes and data migrations.
+
+### Migration History Folder
+
+Migrations are stored in the `Migrations/` folder within the `AuthApi` project. Each migration file represents a versioned change to the database schema or data.
+
+### Restoring from Migration History
+
+To restore the database to a specific point in history or apply pending migrations:
+
+1. **Apply All Pending Migrations**:
+   ```bash
+   cd AuthApi
+   dotnet run -- --migrate
+   ```
+   This will apply all unapplied migrations in order.
+
+2. **Revert to a Specific Migration**:
+   ```bash
+   cd AuthApi
+   dotnet run -- --migrate-to <migration-name>
+   ```
+   Replace `<migration-name>` with the name of the migration to revert to (e.g., `InitialCreate`).
+
+3. **View Migration Status**:
+   ```bash
+   cd AuthApi
+   dotnet run -- --migration-status
+   ```
+   This displays the current migration state and any pending migrations.
+
+4. **Generate a New Migration** (for development):
+   ```bash
+   cd AuthApi
+   dotnet run -- --generate-migration <migration-name>
+   ```
+   This creates a new migration file in the `Migrations/` folder.
+
+**Note**: Ensure MongoDB is running and the connection string is properly configured before running migration commands. The migration system uses MongoDB.Entities' built-in migration runner for reliable database versioning.
+
+**Automatic Migration Updates**: The application automatically applies any pending Entity Framework Core migrations on startup (except in testing environments). If the database model schema changes, the migrations will be applied automatically when the application starts, ensuring the database is always up-to-date.
 
 ## 🏗 Architecture & Patterns
 
