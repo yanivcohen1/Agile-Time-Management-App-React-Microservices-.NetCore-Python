@@ -8,14 +8,16 @@ This is the authentication and user management service, built with ASP.NET Core 
 *   **Database**: MongoDB (via Entity Framework Core)
 *   **Testing**: xUnit, FluentAssertions, WebApplicationFactory
 *   **Documentation**: Swagger / OpenAPI
+*   **Dependency Injection**: Autofac with DynamicProxy for AOP
 
 ## 🏗 Architecture & Patterns
 
 - **Controllers:** Use `[ApiController]` and `[Route("[controller]")]` attributes.
-- **Dependency Injection:** Register services in `Program.cs`.
+- **Dependency Injection:** Register services in `Program.cs` using Autofac.
 - **Configuration:** Use `IOptions<T>` for accessing settings.
 - **Database:** MongoDB via Entity Framework Core.
 - **Authentication:** JWT-based authentication with role-protected endpoints.
+- **Aspect-Oriented Programming (AOP):** Autofac DynamicProxy interceptors for cross-cutting concerns like error logging.
 
 ## 🛠 Setup & Installation
 
@@ -81,6 +83,21 @@ The OpenAPI JSON specification is available at: `http://localhost:5000/openapi/v
 *   **Role-Based Access**: Admin and User roles.
 *   **Todo Management**: CRUD operations for Todos (linked to Users).
 *   **Health Checks**: /health endpoint.
+*   **Error Logging**: Automatic error logging for all service methods using AOP interceptors.
+
+## 🎯 Aspect-Oriented Programming (AOP)
+
+The service implements AOP using Autofac DynamicProxy to provide cross-cutting concerns:
+
+### Error Logging Interceptor
+- **Purpose**: Automatically logs errors that occur in service methods
+- **Coverage**: All `IUserService`, `ITokenService`, and `ITodoService` method calls
+- **Log Details**: 
+  - Service name and method name
+  - Method parameters
+  - Exception message
+  - Inner exception details
+- **Example Log**: `An error occurred in DatabaseUserService.ValidateCredentials with parameters [testuser, password123]. Message: Invalid credentials. InnerException: None`
 
 ## 📂 Project Structure
 
@@ -104,6 +121,7 @@ backend_netCore_service/
 │   │   └── launchSettings.json     # Launch profiles
 │   ├── Services/                   # Business logic services
 │   │   ├── DatabaseUserService.cs  # DB-based user service
+│   │   ├── ErrorLoggingInterceptor.cs # AOP interceptor for error logging
 │   │   ├── InMemoryUserService.cs  # In-memory user service (dev)
 │   │   ├── ITodoService.cs         # Todo service interface
 │   │   ├── ITokenService.cs        # Token service interface
