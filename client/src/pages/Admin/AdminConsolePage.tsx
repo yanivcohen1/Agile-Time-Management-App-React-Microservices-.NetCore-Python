@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Box, Typography, Switch, FormControlLabel, Select, MenuItem, FormControl, InputLabel, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
-import { useAdmin } from '../../context/AdminContext';
+import { useAdmin } from './AdminContext';
 import api from '../../api/axios';
 
 interface User {

@@ -4,7 +4,6 @@ import { CssBaseline, CircularProgress, Box } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { ColorModeProvider } from './context/ColorModeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { AdminProvider } from './context/AdminContext';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -51,11 +50,9 @@ const App: React.FC = () => {
       <CssBaseline />
       <SnackbarProvider maxSnack={3}>
         <AuthProvider>
-          <AdminProvider>
-            <Router>
-              <AppRoutes />
-            </Router>
-          </AdminProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
         </AuthProvider>
       </SnackbarProvider>
     </ColorModeProvider>
