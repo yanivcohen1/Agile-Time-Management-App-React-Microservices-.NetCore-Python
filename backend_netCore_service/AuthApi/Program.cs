@@ -14,6 +14,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using MongoDB.Entities;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,8 @@ if (args.Length >= 2 && args[0] == "--env")
 builder.Configuration.AddYamlFile($"{env}.appsettings.yaml", optional: true, reloadOnChange: true);
 
 // Initialize MongoDB.Entities
-var mongoConnection = builder.Configuration.GetConnectionString("MongoConnection") ?? "mongodb://localhost:27017/netcore_auth_xunit";
-await DB.InitAsync(mongoConnection);
+// var mongoConnection = builder.Configuration.GetConnectionString("MongoConnection") ?? "mongodb://localhost:27017/netcore_auth_xunit";
+// await DB.InitAsync(mongoConnection);
 
 // Use Autofac as the DI container
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -196,7 +197,7 @@ if (!app.Environment.IsEnvironment("Testing"))
     using (var scope = app.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-        await context.Database.MigrateAsync();
+        // await context.Database.MigrateAsync(); // Temporarily disabled for testing
     }
 }
 

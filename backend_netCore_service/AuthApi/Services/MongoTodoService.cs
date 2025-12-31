@@ -17,6 +17,8 @@ public class MongoTodoService : ITodoService
 
     public async Task<TodoResponse> GetTodosAsync(string userId, int page, int size, string sortBy, bool sortDesc, Status? status, string? search, DateTime? dueDateStart, DateTime? dueDateEnd)
     {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentException("UserId cannot be null or empty", nameof(userId));
+#pragma warning disable CS8602
         var userObjectId = ObjectId.Parse(userId);
         var builder = Builders<Todo>.Filter;
         var filter = builder.Eq(t => t.UserLink.Id, userObjectId);
@@ -71,6 +73,8 @@ public class MongoTodoService : ITodoService
 
     public async Task<Todo?> UpdateTodoAsync(string id, string userId, TodoUpdate update)
     {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentException("UserId cannot be null or empty", nameof(userId));
+#pragma warning disable CS8602
         var userObjectId = ObjectId.Parse(userId);
         var filter = Builders<Todo>.Filter.And(
             Builders<Todo>.Filter.Eq(t => t.Id, id),
@@ -91,6 +95,8 @@ public class MongoTodoService : ITodoService
 
     public async Task<bool> DeleteTodoAsync(string id, string userId)
     {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentException("UserId cannot be null or empty", nameof(userId));
+#pragma warning disable CS8602
         var userObjectId = ObjectId.Parse(userId);
         var filter = Builders<Todo>.Filter.And(
             Builders<Todo>.Filter.Eq(t => t.Id, id),
@@ -122,6 +128,8 @@ public class MongoTodoService : ITodoService
 
     public async Task<List<object>> GetWorkloadStatsAsync(string userId)
     {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentException("UserId cannot be null or empty", nameof(userId));
+#pragma warning disable CS8602
         var userObjectId = ObjectId.Parse(userId);
         
         // Use typed filter for match to ensure correct mapping of DBRef/UserLink

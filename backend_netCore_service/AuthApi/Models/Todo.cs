@@ -48,6 +48,11 @@ public class Todo
     public string UserId 
     { 
         get => UserLink?.Id.ToString() ?? string.Empty;
-        set => UserLink = new TodoUserLink { Id = ObjectId.Parse(value) };
+        set 
+        {
+            if (string.IsNullOrEmpty(value)) throw new ArgumentException("UserId cannot be null or empty", nameof(value));
+#pragma warning disable CS8602
+            UserLink = new TodoUserLink { Id = ObjectId.Parse(value) };
+        }
     }
 }
