@@ -27,9 +27,7 @@ if (args.Length >= 2 && args[0] == "--env")
 
 builder.Configuration.AddYamlFile($"{env}.appsettings.yaml", optional: true, reloadOnChange: true);
 
-// Initialize MongoDB.Entities
-// var mongoConnection = builder.Configuration.GetConnectionString("MongoConnection") ?? "mongodb://localhost:27017/netcore_auth_xunit";
-// await DB.InitAsync(mongoConnection);
+// MongoDB.Entities initialization is not needed as services create their own clients
 
 // Use Autofac as the DI container
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
