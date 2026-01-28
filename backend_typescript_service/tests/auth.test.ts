@@ -207,6 +207,7 @@ describe('Auth routes', () => {
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0]).toEqual(
         expect.objectContaining({
+          _id: expect.any(String),
           email: expect.any(String),
           full_name: expect.any(String),
           role: expect.any(String)

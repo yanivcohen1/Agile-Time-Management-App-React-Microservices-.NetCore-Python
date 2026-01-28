@@ -70,6 +70,7 @@ authRouter.get('/me', authenticate, async (req: Request, res: Response, next: Ne
     }
 
     res.json({
+      _id: user._id,
       email: user.username,
       full_name: user.fullName || user.username,
       role: user.role
@@ -85,6 +86,7 @@ authRouter.get('/users', authenticate, requireRole('admin'), async (req: Request
     const users = await em.find(User, {});
 
     res.json(users.map(user => ({
+      _id: user._id,
       email: user.username,
       full_name: user.fullName || user.username,
       role: user.role
