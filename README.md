@@ -4,11 +4,12 @@ A comprehensive full-stack application designed for time management and task tra
 
 ## 🏗 Architecture
 
-The solution consists of three main components:
+The solution consists of four main components:
 
 1.  **Frontend**: A Single Page Application (SPA) built with React.
 2.  **Auth Service (.NET)**: A robust authentication and user management service.
-3.  **Backend Service (Python)**: A lightweight service for additional functionality (e.g., alternative auth/data processing).
+3.  **Backend Service (Python)**: A lightweight service for additional functionality.
+4.  **Backend Service (TypeScript)**: An Express-based service using MikroORM.
 
 ### Architecture & Patterns
 
@@ -20,6 +21,14 @@ The solution consists of three main components:
   - Global error handling (snackbars).
 - **UI Components:** Uses Material UI (`@mui/material`). Custom theme defined in `src/theme.ts`.
 - **Routing:** `react-router-dom` defined in `src/App.tsx`.
+
+#### Backend - TypeScript (`backend_typescript_service/`)
+- **Framework:** Express with TypeScript.
+- **Database:** MongoDB accessed via **MikroORM** (`src/models/`).
+  - Entities are defined using decorators.
+  - Database configuration in `appsettings.yml`.
+- **Authentication:** JWT-based authentication with role-protected endpoints.
+- **Configuration:** Settings loaded from `appsettings.yml` and `.env` files.
 
 #### Backend - Python (`backend_python_service/`)
 - **Framework:** FastAPI with async routes.
@@ -70,6 +79,13 @@ The solution consists of three main components:
 *   **Testing**: Pytest + TestClient
 *   **Swagger**: API Documentation with Swagger
 
+### Backend - TypeScript (`/backend_typescript_service`)
+*   **Framework**: Express + TypeScript
+*   **Database**: MongoDB (via MikroORM)
+*   **Authentication**: JWT
+*   **Testing**: Vitest
+*   **Configuration**: YAML and ENV-based settings
+
 ## 📂 Project Structure
 
 ```
@@ -77,6 +93,7 @@ root/
 ├── client/                   # React Application
 ├── backend_netCore_service/  # ASP.NET Core Web API
 ├── backend_python_service/   # FastAPI Service
+├── backend_typescript_service/ # Express TypeScript Service
 └── README.md                 # This file
 ```
 
@@ -87,6 +104,7 @@ Each service has its own detailed setup instructions. Please refer to the respec
 *   [Frontend Setup](./client/README.md)
 *   [.NET Backend Setup](./backend_netCore_service/README.md)
 *   [Python Backend Setup](./backend_python_service/README.md)
+*   [TypeScript Backend Setup](./backend_typescript_service/README.md)
 
 ## 📦 Available Scripts
 
@@ -123,15 +141,25 @@ All commands are run from the `client/` directory using `pnpm`.
 | `test:cs` | `dotnet test` | Run .NET backend tests |
 | `lint:cs` | `dotnet format` | Format .NET backend code |
 
+### Backend - TypeScript
+| Script | Command | Description |
+| :--- | :--- | :--- |
+| `serve:ts` | `pnpm dev` | Start TypeScript backend (Dev) |
+| `serve:ts:prod` | `pnpm start` | Start TypeScript backend (Prod) |
+| `seed:ts` | `pnpm seed:db` | Seed the TypeScript backend database |
+| `test:ts` | `pnpm test` | Run TypeScript backend tests |
+| `lint:ts` | `pnpm lint` | Lint TypeScript backend code |
+
 ## 🐛 Debugging
 
-This project includes VS Code debug configurations for all three components. Ensure you have the necessary VS Code extensions installed: Debugger for Chrome, Python, and C#.
+This project includes VS Code debug configurations for all components. Ensure you have the necessary VS Code extensions installed: Debugger for Chrome, Python, C#, and TypeScript.
 
 ### Prerequisites
 - VS Code extensions: 
   - Debugger for Chrome (for React debugging)
   - Python (for Python backend debugging)
   - C# (for .NET backend debugging)
+  - ES7+ React/Redux/React-Native snippets (recommended)
 
 ### Debug Configurations
 
@@ -148,6 +176,10 @@ This project includes VS Code debug configurations for all three components. Ens
    - Builds and launches the ASP.NET Core API.
    - Automatically opens the browser when the server is ready.
    - Set breakpoints in `backend_netCore_service/AuthApi/` files.
+
+4. **Debug TypeScript Backend**:
+   - Launches the Express server using `ts-node-dev`.
+   - Set breakpoints in `backend_typescript_service/src/` files.
 
 ### How to Debug
 1. Open the project in VS Code.
