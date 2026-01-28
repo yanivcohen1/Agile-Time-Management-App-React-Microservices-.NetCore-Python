@@ -15,7 +15,8 @@ import CreateTodoModal from '../components/CreateTodoModal';
 import { useSnackbar } from 'notistack';
 
 interface Todo {
-  _id: string;
+  _id?: string;
+  id?: string;
   title: string;
   description?: string;
   status: string;
@@ -77,7 +78,6 @@ const TrackStatus: React.FC = () => {
   }, [page, rowsPerPage, search, statusFilter, startDate, endDate, orderBy, order]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTodos();
 
     const handleTodoCreated = () => {
@@ -109,7 +109,11 @@ const TrackStatus: React.FC = () => {
   const handleConfirmDelete = async () => {
     if (todoToDelete) {
       try {
-        await api.delete(`/todos/${todoToDelete._id}`);
+        const todoId = todoToDelete._id || todoToDelete.id;
+        if (!todoId) {
+          throw new Error('Todo ID is missing');
+        }
+        await api.delete(`/todos/${todoId}`);
         enqueueSnackbar('Todo deleted successfully', { variant: 'success' });
         fetchTodos();
       } catch (error) {
@@ -209,9 +213,9 @@ const TrackStatus: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {todos.map((todo) => (
+            {todos.map((todo, index) => (
               <TableRow 
-                key={todo._id}
+                key={todo._id || todo.id || index}
                 sx={{ 
                   '&:nth-of-type(odd)': { 
                     backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'action.hover' 

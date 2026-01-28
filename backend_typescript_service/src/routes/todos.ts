@@ -35,6 +35,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       if (req.user!.role !== 'admin') {
         throw new HttpError(403, 'Only admins can access other users\' todos');
       }
+      if (!ObjectId.isValid(user_id as string)) {
+        throw new HttpError(400, 'Invalid user ID format');
+      }
       targetUserId = new ObjectId(user_id as string);
     }
 
@@ -176,9 +179,13 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
     const currentUser = await em.findOne(User, { username: req.user!.username });
     if (!currentUser) throw new HttpError(401, 'User not found');
 
+    if (!ObjectId.isValid(req.params.id)) {
+      throw new HttpError(400, 'Invalid ID format');
+    }
+
     const todo = await em.findOne(Todo, {
       _id: new ObjectId(req.params.id),
-      user: { $id: currentUser._id }
+      'user.$id': currentUser._id
     } as FilterQuery<Todo>);
     if (!todo) throw new HttpError(404, 'Todo not found');
 
@@ -204,9 +211,13 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
     const currentUser = await em.findOne(User, { username: req.user!.username });
     if (!currentUser) throw new HttpError(401, 'User not found');
 
+    if (!ObjectId.isValid(req.params.id)) {
+      throw new HttpError(400, 'Invalid ID format');
+    }
+
     const todo = await em.findOne(Todo, {
       _id: new ObjectId(req.params.id),
-      user: { $id: currentUser._id }
+      'user.$id': currentUser._id
     } as FilterQuery<Todo>);
     if (!todo) throw new HttpError(404, 'Todo not found');
 

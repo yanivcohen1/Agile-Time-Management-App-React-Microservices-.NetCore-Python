@@ -7,7 +7,8 @@ import api from '../api/axios';
 import CreateTodoModal from '../components/CreateTodoModal';
 
 interface Todo {
-  _id: string;
+  _id?: string;
+  id?: string;
   title: string;
   description?: string;
   status: string;
@@ -55,7 +56,6 @@ const AgileBoard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTodos();
 
     const handleTodoCreated = () => {
@@ -92,7 +92,11 @@ const AgileBoard: React.FC = () => {
       });
 
       try {
-        await api.put(`/todos/${removed._id}`, { status: newStatus });
+        const todoId = removed._id || removed.id;
+        if (!todoId) {
+          throw new Error('Todo ID is missing');
+        }
+        await api.put(`/todos/${todoId}`, { status: newStatus });
       } catch (error) {
         console.error("Failed to update status", error);
         fetchTodos(); // Revert on error
@@ -187,13 +191,15 @@ const AgileBoard: React.FC = () => {
                         gap: 2 
                       }}
                     >
-                      {tasks.map((task, index) => (
-                        <Draggable key={task._id} draggableId={task._id} index={index}>
-                          {(provided) => (
-                            <Card
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
+                      {tasks.map((task, index) => {
+                        const taskId = task._id || task.id || `temp-${index}`;
+                        return (
+                          <Draggable key={taskId} draggableId={taskId} index={index}>
+                            {(provided) => (
+                              <Card
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
                               sx={{ 
                                 bgcolor: 'background.paper', 
                                 color: 'text.primary',
@@ -240,7 +246,8 @@ const AgileBoard: React.FC = () => {
                             </Card>
                           )}
                         </Draggable>
-                      ))}
+                        );
+                      })}
                       {provided.placeholder}
                     </Box>
                   )}

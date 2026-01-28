@@ -11,7 +11,8 @@ import api from '../api/axios';
 import { useSnackbar } from 'notistack';
 
 interface Todo {
-  _id: string;
+  _id?: string;
+  id?: string;
   title: string;
   description?: string;
   status: string;
@@ -61,7 +62,11 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
   const handleSubmit = async () => {
     try {
       if (todo) {
-        await api.put(`/todos/${todo._id}`, {
+        const todoId = todo._id || todo.id;
+        if (!todoId) {
+          throw new Error('Todo ID is missing');
+        }
+        await api.put(`/todos/${todoId}`, {
           title,
           description,
           duration,

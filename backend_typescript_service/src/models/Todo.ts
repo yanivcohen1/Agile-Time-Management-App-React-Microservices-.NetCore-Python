@@ -1,6 +1,5 @@
-import { Entity, PrimaryKey, Property, Enum, ManyToOne } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, Enum } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
-import { User } from './User';
 
 export enum TodoStatus {
   BACKLOG = 'BACKLOG',

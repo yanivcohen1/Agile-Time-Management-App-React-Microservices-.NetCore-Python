@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { RequestContext } from '@mikro-orm/core';
-import { env, UserRole } from '../config/env';
+import { env } from '../config/env';
 import { HttpError } from '../errors/httpError';
 import { User } from '../models/User';
 import { comparePassword } from '../lib/password';
