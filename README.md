@@ -90,13 +90,18 @@ The solution consists of four main components:
 
 ## 📂 Project Structure
 
-```
+```text
 root/
-├── client/                   # React Application
-├── backend_netCore_service/  # ASP.NET Core Web API
-├── backend_python_service/   # FastAPI Service
-├── backend_typescript_service/ # Express TypeScript Service
-└── README.md                 # This file
+├── client/                      # React frontend (Vite/TypeScript/MUI)
+├── backend_netCore_service/     # ASP.NET Core 9.0 Web API (EF Core/MongoDB)
+├── backend_python_service/      # FastAPI Service (Beanie ODM/MongoDB)
+├── backend_typescript_service/  # Express TypeScript Service (Tsoa/MikroORM/MongoDB)
+│   ├── src/
+│   │   ├── controllers/         # Tsoa Controllers (API Logic)
+│   │   ├── routes/              # Tsoa-generated Express routes
+│   │   └── models/              # MikroORM Entities
+│   └── tsoa.json                # Tsoa Configuration
+└── README.md                    # This file
 ```
 
 ## 🛠 Getting Started

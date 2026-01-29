@@ -142,16 +142,18 @@ pnpm start
 express_ts/
 ├── src/                # Source code directory
 │   ├── config/         # Configuration logic (database connection, env vars)
+│   ├── controllers/    # API Controllers (Tsoa decorators)
 │   ├── errors/         # Custom HTTP error classes
-│   ├── middleware/     # Express middleware (auth, error handling)
+│   ├── middleware/     # Express middleware (auth, tsoa authentication)
 │   ├── models/         # MikroORM entities
-│   ├── routes/         # API route definitions
+│   ├── routes/         # Auto-generated routes (by Tsoa)
 │   ├── types/          # TypeScript custom type definitions
 │   ├── app.ts          # Express application configuration
 │   └── server.ts       # Main entry point that starts the server
 ├── tests/              # Test suites and setup files
 ├── appsettings.yml     # Central configuration file (YAML)
 ├── create-users.ts     # Script to seed the database with initial users
+├── tsoa.json           # Tsoa configuration file
 ├── package.json        # Project metadata, dependencies, and scripts
 └── tsconfig.json       # Main TypeScript configuration
 ```
