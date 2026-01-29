@@ -1,4 +1,4 @@
-# Express + TypeScript + MongoDB + MikroORM + Todo & Auth API
+# Express + TypeScript + MongoDB + MikroORM + Tsoa 
 
 A robust Express server written in TypeScript providing comprehensive features for user authentication, role-based access control, and Todo management using MongoDB and MikroORM.
 
