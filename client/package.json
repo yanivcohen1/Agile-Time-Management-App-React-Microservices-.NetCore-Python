@@ -31,6 +31,7 @@
     "test:ts": "cd ../backend_typescript_service && pnpm test",
     "lint:ts": "cd ../backend_typescript_service && pnpm lint",
     "serve:ts": "cd ../backend_typescript_service && pnpm dev",
+    "tsoa:ts": "cd ../backend_typescript_service && pnpm tsoa",
     "build:ts": "cd ../backend_typescript_service && pnpm build",
     "serve:ts:prod": "cd ../backend_typescript_service && pnpm start"
   },
